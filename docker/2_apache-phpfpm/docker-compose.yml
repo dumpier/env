@@ -1,27 +1,25 @@
 version: '3'
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+  httpd:
+    image: httpd:latest
+    container_name: httpd
     networks:
       app_net:
         ipv4_address: 172.24.0.2
     ports:
       - 80:80
     volumes:
-      - ./containers/nginx/conf.d:/etc/nginx/conf.d
+      - ./containers/httpd/conf.d/vhost-php7.4.conf:/usr/local/apache2/conf/extra/vhost-php7.4.conf
+      - ./containers/httpd/conf.d/vhost-php8.2.conf:/usr/local/apache2/conf/extra/vhost-php8.2.conf
       - ./code:/var/www/html/code
 
   php7.4:
     build:
       context: ./containers/php
       dockerfile: Dockerfile.php7.4
-    container_name: php7.4-apache
-    ports:
-      - 81:81
+    container_name: php7.4-fpm
     volumes:
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
-      - ./containers/httpd/conf.d/vhost-php7.4.conf:/etc/apache2/sites-enabled/vhost-php.conf
       - ./code/php/:/var/www/html/code/php
     networks:
       app_net:
@@ -32,12 +30,9 @@ services:
     build:
       context: ./containers/php
       dockerfile: Dockerfile.php8.2
-    container_name: php8.2-apache
-    ports:
-      - 82:82
+    container_name: php8.2-fpm
     volumes:
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
-      - ./containers/httpd/conf.d/vhost-php8.2.conf:/etc/apache2/sites-enabled/vhost-php.conf
       - ./code/php/:/var/www/html/code/php
     networks:
       app_net:
