@@ -88,7 +88,7 @@ class Docker
 
         # docker-composeビルド
         config.vm.provision :shell, privileged: false, inline: <<-SHELL
-            cd /vagrant/docker#{$DOCKER_DIR} && docker-compose build
+            cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose build
         SHELL
 
         # docker-compose起動
