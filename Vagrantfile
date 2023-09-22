@@ -5,13 +5,13 @@
 $VM_BOX = 'ubuntu/focal64'
 $VM_BOX = 'almalinux/9'
 $VM_BOX = 'ailispaw/barge'
+$DOCKER_DIR = "1_nginx_proxy"
 
 
 $PRIVATE_IP_LIST = ['192.168.56.101', '192.168.56.102', '192.168.56.103']
 $FORWARED_PORTS = []
 $SHARED_FOLDERS = {
     './docker'=>'/vagrant/docker',
-    '../../project'=>'/vagrant/project',
 }
 
 
@@ -88,12 +88,12 @@ class Docker
 
         # docker-composeビルド
         config.vm.provision :shell, privileged: false, inline: <<-SHELL
-            cd /vagrant/docker && docker-compose build
+            cd /vagrant/docker#{$DOCKER_DIR} && docker-compose build
         SHELL
 
         # docker-compose起動
         config.vm.provision "shell", privileged: false, run: 'always', inline: <<-SHELL
-            cd /vagrant/docker && docker-compose up -d 1>&2
+            cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose up -d 1>&2
         SHELL
     end
 end
