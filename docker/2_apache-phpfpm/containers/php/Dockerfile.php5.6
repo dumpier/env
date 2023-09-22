@@ -1,0 +1,10 @@
+FROM php:5.6-fpm
+RUN echo "deb http://archive.debian.org/debian/ stretch main" > /etc/apt/sources.list && \
+  echo "deb http://archive.debian.org/debian-security stretch/updates main" >> /etc/apt/sources.list
+RUN apt-get update
+#RUN apt-get -y install libzip-dev zip
+#RUN docker-php-ext-install pdo_mysql mysql
+
+#COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# php7.2以下のcomposer2.2.17
+#COPY --from=composer:2.2.17 /usr/bin/composer /usr/bin/composer

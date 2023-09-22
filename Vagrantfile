@@ -5,7 +5,9 @@
 $VM_BOX = 'ubuntu/focal64'
 $VM_BOX = 'almalinux/9'
 $VM_BOX = 'ailispaw/barge'
+
 $DOCKER_DIR = "1_nginx_proxy"
+$DOCKER_DIR = "2_apache-phpfpm"
 
 
 $PRIVATE_IP_LIST = ['192.168.56.101', '192.168.56.102', '192.168.56.103']
