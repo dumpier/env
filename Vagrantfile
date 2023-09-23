@@ -8,6 +8,7 @@ $VM_BOX = 'ailispaw/barge'
 
 $DOCKER_DIR = "1_nginx_proxy"
 $DOCKER_DIR = "2_apache-phpfpm"
+$DOCKER_DIR = "3_nodejs"
 
 
 $PRIVATE_IP_LIST = ['192.168.56.101', '192.168.56.102', '192.168.56.103']
