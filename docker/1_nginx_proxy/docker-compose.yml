@@ -19,6 +19,7 @@ services:
     container_name: php7.4-apache
     ports:
       - 81:81
+      - 82:82
     volumes:
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
       - ./containers/httpd/conf.d/vhost-php7.4.conf:/etc/apache2/sites-enabled/vhost-php.conf
@@ -34,7 +35,8 @@ services:
       dockerfile: Dockerfile.php8.2
     container_name: php8.2-apache
     ports:
-      - 82:82
+      - 83:83
+      - 84:84
     volumes:
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
       - ./containers/httpd/conf.d/vhost-php8.2.conf:/etc/apache2/sites-enabled/vhost-php.conf
