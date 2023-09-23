@@ -6,7 +6,7 @@ $VM_BOX = 'ubuntu/focal64'
 $VM_BOX = 'almalinux/9'
 $VM_BOX = 'ailispaw/barge'
 
-$DOCKER_DIR = "1_nginx_proxy"
+$DOCKER_DIR = "1_nginx-proxy"
 $DOCKER_DIR = "2_apache-phpfpm"
 $DOCKER_DIR = "3_nodejs"
 $DOCKER_DIR = "4_nginx-phpfpm"
