@@ -11,11 +11,7 @@ services:
     volumes:
       - ./containers/nginx/conf.d:/etc/nginx/conf.d
       - ./code:/var/www/html/code
-      - ../project/:/var/www/html/project
     depends_on:
-      - php
-      - php5.6
-      - php7.4
       - node
 
   node:
