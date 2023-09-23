@@ -9,9 +9,13 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./containers/httpd/conf.d/vhost-php7.4.conf:/usr/local/apache2/conf/extra/vhost-php7.4.conf
-      - ./containers/httpd/conf.d/vhost-php8.2.conf:/usr/local/apache2/conf/extra/vhost-php8.2.conf
+      - ./containers/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./containers/httpd/conf.d/vhost-php7.4.conf:/usr/local/apache2/conf/vhosts/vhost-php7.4.conf
+      - ./containers/httpd/conf.d/vhost-php8.2.conf:/usr/local/apache2/conf/vhosts/vhost-php8.2.conf
       - ./code:/var/www/html/code
+    depends_on:
+      - php7.4
+      - php8.2
 
   php7.4:
     build:
