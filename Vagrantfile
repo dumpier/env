@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # # vi: set ft=ruby :
 
+$BUILD_DOCKER_CONTAINER=false
+
 # vagrant config
 $VM_BOX = 'ubuntu/focal64'
 $VM_BOX = 'almalinux/9'
@@ -80,24 +82,24 @@ class Docker
     # docker-composeインストール等
     def self.build(config)
         if $VM_BOX.include?("barge") || $VM_BOX.include?("alpine")
-            # Bargeosの場合
             config.vm.provision :shell, privileged: true, inline: <<-SHELL
                 /etc/init.d/docker restart 20.10.16
-
                 mkdir -p /opt/bin
                 wget -L https://github.com/docker/compose/releases/download/v2.17.2/docker-compose-`uname -s`-`uname -m` -O /opt/bin/docker-compose
                 chmod +x /opt/bin/docker-compose
             SHELL
         end
 
-        # docker-composeビルド
-        config.vm.provision :shell, privileged: false, inline: <<-SHELL
-            cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose build
-        SHELL
+        if $BUILD_DOCKER_CONTAINER
+            # docker-composeビルド
+            config.vm.provision :shell, privileged: false, inline: <<-SHELL
+                cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose build
+            SHELL
 
-        # docker-compose起動
-        config.vm.provision "shell", privileged: false, run: 'always', inline: <<-SHELL
-            cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose up -d 1>&2
-        SHELL
+            # docker-compose起動
+            config.vm.provision "shell", privileged: false, run: 'always', inline: <<-SHELL
+                cd /vagrant/docker/#{$DOCKER_DIR} && docker-compose up -d 1>&2
+            SHELL
+        end
     end
 end

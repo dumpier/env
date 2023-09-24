@@ -1,7 +1,22 @@
 version: '3'
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    networks:
+      app_net:
+        ipv4_address: 172.24.0.10
+    ports:
+      - 81:81
+    volumes:
+      - ./containers/nginx/conf.d:/etc/nginx/conf.d
+      - ./code/php/:/var/www/html/code/php
+    depends_on:
+      - php7.4-fpm
+      - php8.2-fpm
+
   httpd:
-    image: httpd:latest
+    build: ./containers/httpd
     container_name: httpd
     networks:
       app_net:
@@ -9,20 +24,20 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./containers/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./containers/httpd/conf.d/vhost-php7.4.conf:/usr/local/apache2/conf/vhosts/vhost-php7.4.conf
-      - ./containers/httpd/conf.d/vhost-php8.2.conf:/usr/local/apache2/conf/vhosts/vhost-php8.2.conf
-      - ./code:/var/www/html/code
+      - ./containers/httpd/conf.d/vhost-php7.4.conf:/etc/httpd/conf.d/vhost-php7.4.conf
+      - ./containers/httpd/conf.d/vhost-php8.2.conf:/etc/httpd/conf.d/vhost-php8.2.conf
+      - ./code/php:/var/www/html/code/php
     depends_on:
-      - php7.4
-      - php8.2
+      - php7.4-fpm
+      - php8.2-fpm
 
-  php7.4:
+  php7.4-fpm:
     build:
       context: ./containers/php
       dockerfile: Dockerfile.php7.4
     container_name: php7.4-fpm
     volumes:
+      #- ./containers/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
       - ./code/php/:/var/www/html/code/php
     networks:
@@ -30,12 +45,13 @@ services:
         ipv4_address: 172.24.0.3
     tty: true
 
-  php8.2:
+  php8.2-fpm:
     build:
       context: ./containers/php
       dockerfile: Dockerfile.php8.2
     container_name: php8.2-fpm
     volumes:
+      #- ./containers/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./containers/php/php.ini:/usr/local/etc/php/php.ini
       - ./code/php/:/var/www/html/code/php
     networks:
