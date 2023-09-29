@@ -5,7 +5,7 @@ services:
     container_name: nginx
     networks:
       app_net:
-        ipv4_address: 172.24.4.2
+        ipv4_address: 172.24.0.2
     ports:
       - 80:80
     volumes:
@@ -27,7 +27,7 @@ services:
       - ../project/:/var/www/html/project
     networks:
       app_net:
-        ipv4_address: 172.24.4.5
+        ipv4_address: 172.24.0.5
     extra_hosts:
       - "api.local.mysite.test:172.24.0.21"
     tty: true
@@ -48,7 +48,7 @@ services:
       - ./code/php/php5.6:/var/www/html/code/php/php5.6
     networks:
       app_net:
-        ipv4_address: 172.24.4.6
+        ipv4_address: 172.24.0.6
     tty: true
     links:
       - mysql
@@ -65,7 +65,7 @@ services:
       - ./code/php/php7.4:/var/www/html/code/php/php7.4
     networks:
       app_net:
-        ipv4_address: 172.24.4.7
+        ipv4_address: 172.24.0.7
     tty: true
     links:
       - mysql
@@ -82,7 +82,7 @@ services:
       - ./code/node:/usr/src/app
     networks:
       app_net:
-        ipv4_address: 172.24.4.11
+        ipv4_address: 172.24.0.11
     ports:
       - 3000:3000
     #working_dir: /usr/src/app
@@ -96,7 +96,7 @@ services:
     container_name: redis
     networks:
       app_net:
-        ipv4_address: 172.24.4.13
+        ipv4_address: 172.24.0.13
     ports:
       - "6379:6379"
     volumes:
@@ -118,7 +118,7 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       app_net:
-        ipv4_address: 172.24.4.14
+        ipv4_address: 172.24.0.14
     ports:
       - 3306:3306
 
@@ -129,7 +129,7 @@ services:
     tty: true
     networks:
       app_net:
-        ipv4_address: 172.24.4.15
+        ipv4_address: 172.24.0.15
     ports:
       - "8025:8025"
       - "1025:1025"
@@ -146,4 +146,4 @@ networks:
     ipam:
      driver: default
      config:
-       - subnet: 172.24.4.0/24
+       - subnet: 172.24.0.0/24

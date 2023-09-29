@@ -5,7 +5,7 @@ services:
     container_name: nginx
     networks:
       appnet-1:
-        ipv4_address: 172.24.1.2
+        ipv4_address: 172.24.0.2
     ports:
       - 80:80
     volumes:
@@ -26,7 +26,7 @@ services:
       - ./code/php/:/var/www/html/code/php
     networks:
       appnet-1:
-        ipv4_address: 172.24.1.3
+        ipv4_address: 172.24.0.3
     tty: true
 
   php8.2:
@@ -43,7 +43,7 @@ services:
       - ./code/php/:/var/www/html/code/php
     networks:
       appnet-1:
-        ipv4_address: 172.24.1.4
+        ipv4_address: 172.24.0.4
     tty: true
 
 networks:
@@ -52,4 +52,4 @@ networks:
     ipam:
      driver: default
      config:
-       - subnet: 172.24.1.0/24
+       - subnet: 172.24.0.0/24
