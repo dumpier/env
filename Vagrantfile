@@ -12,6 +12,7 @@ $DOCKER_DIR = "1_nginx-proxy"
 $DOCKER_DIR = "2_apache-phpfpm"
 $DOCKER_DIR = "3_nodejs"
 $DOCKER_DIR = "4_nginx-phpfpm"
+$DOCKER_DIR = "5_nginx-conf"
 
 
 $PRIVATE_IP_LIST = ['192.168.56.101', '192.168.56.102', '192.168.56.103']
@@ -86,7 +87,25 @@ class Docker
                 /etc/init.d/docker restart 20.10.16
                 mkdir -p /opt/bin
                 wget -L https://github.com/docker/compose/releases/download/v2.17.2/docker-compose-`uname -s`-`uname -m` -O /opt/bin/docker-compose
-                chmod +x /opt/bin/docker-compose
+            SHELL
+        end
+        if $VM_BOX.include?("almalinux")
+            config.vm.provision :shell, privileged: true, inline: <<-SHELL
+                dnf -y install git wget
+                dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+                dnf -y install docker-ce
+                wget https://github.com/docker/compose/releases/download/2.21.0/docker-compose-`uname -s`-`uname -m` -O /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+                systemctl enable docker
+                systemctl start docker
+            SHELL
+
+            config.vm.provision :shell, privileged: false, inline: <<-SHELL
+                sudo gpasswd -a $(whoami) docker
+                sudo chgrp docker /var/run/docker.sock
+                sudo chmod 666 /var/run/docker.sock
+                sudo service docker restart
             SHELL
         end
 
