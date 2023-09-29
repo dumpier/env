@@ -1,0 +1,36 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    networks:
+      app_net:
+        ipv4_address: 172.24.5.10
+    ports:
+      - 81:81
+    volumes:
+      - ./containers/nginx/conf.d:/etc/nginx/conf.d
+      - ./code/php/:/var/www/html/code/php
+    depends_on:
+      - php8.2-fpm
+
+  php8.2-fpm:
+    build:
+      context: ./containers/php
+      dockerfile: Dockerfile.php8.2
+    container_name: php8.2-fpm
+    volumes:
+      - ./containers/php/php.ini:/usr/local/etc/php/php.ini
+      - ./code/php/:/var/www/html/code/php
+    networks:
+      app_net:
+        ipv4_address: 172.24.5.4
+    tty: true
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+     driver: default
+     config:
+       - subnet: 172.24.5.0/24
