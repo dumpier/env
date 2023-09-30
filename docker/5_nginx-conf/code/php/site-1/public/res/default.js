@@ -1,0 +1,1 @@
+const dir = 'public/res/default.js';
