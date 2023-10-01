@@ -47,6 +47,12 @@
 
 
 ## サンプル
+- locationの優先順位
+  - 完全一致(=)
+  - 前方一致(^~)
+  - 正規表現(~)
+  - 正規表現(~*)
+  - 前方一致(なし)
 
 <details><summary>php-fpm設定</summary>
 
@@ -110,6 +116,16 @@ location ~ \.(jpg|jpeg|png|js|css)$ {
 }
 location @to_static_res {
   rewrite ^(^.+)\.(.+)$ /res/$1.$2 last;
+}
+```
+</details>
+
+<details><summary>前方一致(^~)</summary>
+
+```
+# 先頭が/common/で始まる場合、html/commonに
+location ^~ /common/ {
+    alias /var/www/html/code/php/site-1/public/html/common/;
 }
 ```
 </details>
