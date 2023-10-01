@@ -6,8 +6,8 @@
   - https://mogile.web.fc2.com/nginx/http/
   - `http core` https://mogile.web.fc2.com/nginx/http/ngx_http_core_module.html
 
-## よく使うもの
-<details><summary>一覧</summary>
+## よく使う
+<details><summary>ディレクティブと変数一覧</summary>
 
 - http
 - server
@@ -28,6 +28,23 @@
   - $fastcgi_script_name
   - $request_filename
 </details>
+
+<details><summary>負荷分散</summary>
+
+- 負荷分散方式
+  - 静的分散方式
+    - `ラウンドロビン(round robin)` 分散対象サーバに均等にリクエストを振り分ける方式
+    - `静的な重み付きラウンドロビン`
+  - 動的分散方式
+    - `least connected`
+- Nginxの負荷分散方式
+  - `Round robin`: `proxy_pass`
+  - `Least connected`: `upstream`
+    - `ip-hash` `sticky`, `persistent`: 同じクライアントからのリクエストを同じサーバーに送る
+    - `weight` 重み付けロードバランサー
+    - `in-band` ヘルスチェック
+</details>
+
 
 ## サンプル
 
@@ -80,11 +97,19 @@ location / {
 index index.php index.html;
 
 # 拡張子がhtmlの場合、ファイルが見つからない場合htmlフォルダ配下で探す
-location ~ \.html$ { try_files $uri @to_static_html; }
-location @to_static_html { rewrite ^(^.+)\.(.+)$ /html/$1.$2 last; }
+location ~ \.html$ {
+  try_files $uri @to_static_html;
+}
+location @to_static_html {
+  rewrite ^(^.+)\.(.+)$ /html/$1.$2 last;
+}
 
 # 拡張子がhtmlの場合、ファイルが見つからない場合htmlフォルダ配下で探す
-location ~ \.(jpg|jpeg|png|js|css)$ { try_files $uri @to_static_res; }
-location @to_static_res { rewrite ^(^.+)\.(.+)$ /res/$1.$2 last; }
+location ~ \.(jpg|jpeg|png|js|css)$ {
+  try_files $uri @to_static_res;
+}
+location @to_static_res {
+  rewrite ^(^.+)\.(.+)$ /res/$1.$2 last;
+}
 ```
 </details>

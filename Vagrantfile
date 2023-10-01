@@ -87,6 +87,7 @@ class Docker
                 /etc/init.d/docker restart 20.10.16
                 mkdir -p /opt/bin
                 wget -L https://github.com/docker/compose/releases/download/v2.17.2/docker-compose-`uname -s`-`uname -m` -O /opt/bin/docker-compose
+                chmod +x /opt/bin/docker-compose
             SHELL
         end
         if $VM_BOX.include?("almalinux")
