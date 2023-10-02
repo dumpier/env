@@ -123,9 +123,13 @@ location @to_static_res {
 <details><summary>前方一致(^~)</summary>
 
 ```
-# 先頭が/common/で始まる場合、html/commonに
+# 先頭が/common/の場合、html/commonを参照
 location ^~ /common/ {
     alias /var/www/html/code/php/site-1/public/html/common/;
+}
+# 先頭が/static/の場合、html/staticを参照
+location ^~ /static/ {
+    root /var/www/html/code/php/site-1/public/html;
 }
 ```
 </details>

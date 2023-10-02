@@ -95,7 +95,7 @@ class Docker
                 dnf -y install git wget
                 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
                 dnf -y install docker-ce
-                wget https://github.com/docker/compose/releases/download/2.21.0/docker-compose-`uname -s`-`uname -m` -O /usr/local/bin/docker-compose
+                wget https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-`uname -s`-`uname -m` -O /usr/local/bin/docker-compose
                 chmod +x /usr/local/bin/docker-compose
                 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                 systemctl enable docker
