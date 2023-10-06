@@ -5,7 +5,7 @@ services:
     container_name: nginx
     networks:
       app_net:
-        ipv4_address: 172.24.0.2
+        ipv4_address: 172.24.3.2
     ports:
       - 80:80
     volumes:
@@ -24,7 +24,7 @@ services:
       - ./code/node:/usr/src/app
     networks:
       app_net:
-        ipv4_address: 172.24.0.11
+        ipv4_address: 172.24.3.11
     ports:
       - 3000:3000
     #working_dir: /usr/src/app
@@ -33,10 +33,39 @@ services:
     #command: "nodemon /usr/src/app/app.js"
     #command: bash -c "npm install && npm install nodemon -g && nodemon /usr/src/app/app.js"
 
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ../containers/mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ../containers/mongo/configdb:/data/configdb
+      - /vagrant/docker-data/mongo/db:/data/db
+    networks:
+      app_net:
+        ipv4_address: 172.24.3.20
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_SERVER: mongo
+    networks:
+      app_net:
+        ipv4_address: 172.24.3.21
+    depends_on:
+      - mongo
+
 networks:
   app_net:
     driver: bridge
     ipam:
      driver: default
      config:
-       - subnet: 172.24.0.0/24
+       - subnet: 172.24.3.0/24
